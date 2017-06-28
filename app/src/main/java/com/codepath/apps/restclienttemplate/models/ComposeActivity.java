@@ -3,8 +3,11 @@ package com.codepath.apps.restclienttemplate.models;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.TwitterClient;
@@ -16,32 +19,38 @@ import org.parceler.Parcels;
 
 public class ComposeActivity extends AppCompatActivity {
 
-    //private String message;
+    private EditText etBody;
+    private TextView etCharCount;
+    public static final int CHARS_IN_A_TWEET=140;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
+
+        etBody = (EditText) findViewById(R.id.etBody);
+        etBody.addTextChangedListener(mTextEditorWatcher);
+        
     }
 
-    /*
-    public boolean onTweetItemSelected(MenuItem item){
-        // Handle presses on the action bar items
-        switch (item.getItemId()) {
-            case R.id.btTweet:
-                TwitterClient t = new TwitterClient(this);
-                onSubmit();
 
-                return true;
-            case R.id.btCancel:
-
-
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+    private final TextWatcher mTextEditorWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }
-    }
- */
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            etCharCount = (TextView) findViewById(R.id.etCharCount);
+            etCharCount.setText(String.valueOf((CHARS_IN_A_TWEET - s.length())));
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
+
     public void onSubmit(View v){
         EditText etName = (EditText) findViewById(R.id.etBody);
         // Prepare data intent
@@ -75,6 +84,7 @@ public class ComposeActivity extends AppCompatActivity {
 
         }));
     }
+
 /*
     @Override
     public void onSuccess(int statusCode, Header[] headers, JSONArray response) {

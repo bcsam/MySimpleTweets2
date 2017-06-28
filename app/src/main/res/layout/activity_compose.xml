@@ -31,4 +31,26 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/btTweet" />
 
+    <TextView
+        android:id="@+id/etCharCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignStart="@+id/btTweet"
+        android:layout_below="@+id/etBody"
+        android:ems="10"
+        android:inputType="numberSigned"
+        android:textSize="14dp" />
+
+    <TextView
+        android:id="@+id/tvCharsRemaining"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Characters Remaining: "
+        android:layout_alignBaseline="@+id/etCharCount"
+        android:layout_alignBottom="@+id/etCharCount"
+        android:layout_toStartOf="@+id/etCharCount" />
+
+
+
 </RelativeLayout>
