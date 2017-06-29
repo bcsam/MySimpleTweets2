@@ -53,6 +53,7 @@ public class TimelineActivity extends AppCompatActivity {
         rvTweets.setAdapter(tweetAdapter);
         populateTimeline();
 
+        /*
         // Only ever call `setContentView` once right at the top
         setContentView(R.layout.activity_timeline); //check on this
         // Lookup the swipe container view
@@ -72,7 +73,10 @@ public class TimelineActivity extends AppCompatActivity {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+
+        */
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -158,6 +162,7 @@ public class TimelineActivity extends AppCompatActivity {
 
     }
 
+    /*
     public void fetchTimelineAsync(int page) {
         // Send the network request to fetch the updated data
         // `client` here is an instance of Android Async HTTP
@@ -179,7 +184,7 @@ public class TimelineActivity extends AppCompatActivity {
         });
     }
 
-
+*/
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode==REQUEST_CODE && resultCode==RESULT_OK) {
