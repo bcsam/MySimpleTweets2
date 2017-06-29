@@ -98,6 +98,15 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
             tvTimeStamp = (TextView) itemView.findViewById(R.id.tvTimeStamp);
 
         }
+    }
 
+    public void clear() {
+        mTweets.clear();
+        notifyDataSetChanged();
+    }
+
+    public void add(Tweet tweet) {
+        mTweets.add(tweet);
+        notifyDataSetChanged();
     }
 }
