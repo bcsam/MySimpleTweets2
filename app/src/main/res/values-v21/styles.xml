@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources><style name="Twitter" parent="AppBaseTheme" >
+        <item name="colorPrimary">@color/twitter_blue</item>
+        <item name="colorAccent">@color/twitter_blue</item>
+        <item name="colorPrimaryDark">@color/twitter_blue</item>
+    </style></resources>
