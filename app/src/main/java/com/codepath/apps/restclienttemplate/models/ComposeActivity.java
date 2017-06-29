@@ -56,7 +56,6 @@ public class ComposeActivity extends AppCompatActivity {
         // Prepare data intent
         // Pass relevant data back as a result
         final String message = etName.getText().toString();
-        ////data.putExtra("tweetBody", message);
 
         TwitterClient client = new TwitterClient(this);
 

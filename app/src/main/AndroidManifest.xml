@@ -10,13 +10,13 @@
     <application
         android:name=".TwitterApp"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/ic_launcher_twitter_round"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/Twitter">
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme">
+            android:theme="@style/Twitter">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
