@@ -20,7 +20,6 @@ import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -38,6 +37,7 @@ public class TimelineActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("Brent", "Logging working");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
         client = TwitterApp.getRestClient();
@@ -82,6 +82,17 @@ public class TimelineActivity extends AppCompatActivity {
 
     }
 
+    /*
+    public void reply(){
+        Log.d("Working", "Inside reply");
+        launchComposeView();
+        String replyInitMessage = "Replying to @";
+
+        ComposeActivity.setEtBodyText("Replying to");
+
+    }
+*/
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -89,6 +100,7 @@ public class TimelineActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -106,6 +118,7 @@ public class TimelineActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
 
     // ActivityOne.java
     public void launchComposeView() {
@@ -179,7 +192,7 @@ public class TimelineActivity extends AppCompatActivity {
                 tweetAdapter.clear();
                 // ...the data has come back, add new items to your adapter...
                 //ArrayList<Tweet> temp = new ArrayList<Tweet>();
-                for(int i=0; i<response.length(); i++){
+                for (int i = 0; i < response.length(); i++) {
                     //convert each object to a Tweet model
 
                     //add the Tweet model to our data source
@@ -187,9 +200,8 @@ public class TimelineActivity extends AppCompatActivity {
                     try {
                         Tweet tweet = Tweet.fromJSON(response.getJSONObject(i));
                         tweets.add(tweet);
-                        tweetAdapter.notifyItemInserted(tweets.size()-1);
-
-                    } catch (JSONException e){
+                        tweetAdapter.notifyItemInserted(tweets.size() - 1);
+                    } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
@@ -203,17 +215,6 @@ public class TimelineActivity extends AppCompatActivity {
                 Log.d("DEBUG", "Fetch timeline error: " + e.toString());
             }
         });
-    }
-
-
-    public void clear() {
-        tweets.clear();
-        tweetAdapter.notifyDataSetChanged(); //check on it
-    }
-
-    public void addAll(List<Tweet> list) {
-        tweets.addAll(list);
-        tweetAdapter.notifyDataSetChanged();
     }
 
     @Override

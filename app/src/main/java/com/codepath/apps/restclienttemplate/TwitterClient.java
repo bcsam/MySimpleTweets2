@@ -61,11 +61,25 @@ public class TwitterClient extends OAuthBaseClient {
 	 *    i.e client.post(apiUrl, params, handler);
 	 */
 
-	public void sendTweet(String message, AsyncHttpResponseHandler handler) {
+	public void sendTweet(String message, AsyncHttpResponseHandler handler, long in_reply_to_status_id, String in_reply_to_screen_name) {
 		String apiUrl = getApiUrl("statuses/update.json");
 		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
-		params.put("status", message);
+		if(in_reply_to_status_id == -1){
+			params.put("status", message);
+		}else{
+			params.put("in_reply_to_status_id", in_reply_to_status_id);
+			params.put("in_reply_to_screen_name", in_reply_to_screen_name);
+			params.put("status", message);
+		}
 		client.post(apiUrl, params, handler);
 	}
+//putExtra of screenName and replyId
+	//unpack in the composeActivity
+	//add an argument so that it takes in a reply id
+	//when upacking long use "replyID", sentinel
+	//if reply ID is not -1 then set parameter of status id equal to the argument
+	//set replyToStatusID
+	//when doing a regular post set the replyID to sentinel
+
 }

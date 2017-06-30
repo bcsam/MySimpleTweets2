@@ -1,15 +1,19 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.codepath.apps.restclienttemplate.models.ComposeActivity;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
 import java.text.ParseException;
@@ -17,17 +21,19 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
+import static android.view.View.OnClickListener;
+
 /**
  * Created by bcsam on 6/26/17.
  */
 
-public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
+public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> {
 
     private List<Tweet> mTweets;
     Context context;
 
     //pass in Tweets array into constructor
-    public TweetAdapter(List<Tweet> tweets){
+    public TweetAdapter(List<Tweet> tweets) {
         mTweets = tweets;
     }
 
@@ -60,7 +66,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         Glide.with(context).load(tweet.user.profileImageUrl).into(holder.ivProfileImage);
     }
 
-    public int getItemCount(){
+    public int getItemCount() {
         return mTweets.size();
     }
 
@@ -82,22 +88,47 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         return relativeDate;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView ivProfileImage;
         public TextView tvUsername;
         public TextView tvBody;
         public TextView tvTimeStamp;
+        public Button btReply;
 
-        public ViewHolder(View itemView){
+        public ViewHolder(View itemView) {
             super(itemView);
-
             //perform findViewById lookups
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
             tvUsername = (TextView) itemView.findViewById(R.id.tvUserName);
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
             tvTimeStamp = (TextView) itemView.findViewById(R.id.tvTimeStamp);
+            btReply = (Button) itemView.findViewById(R.id.btReply);
+            //itemView.setOnClickListener(this);
 
-        }
+
+            btReply.setOnClickListener(new OnClickListener() {
+
+                public void onClick(View v) {
+                    Log.d("Brent", "Sent intent");
+                    //gets item position
+                    int position = getAdapterPosition();
+                    //make sure the position is valid, i.e. actually exists in the view
+                    if (position != RecyclerView.NO_POSITION) {
+                        // get the movie at the position, this won't work if the class is static
+                        Tweet tweet = mTweets.get(position);
+                        // create intent for the new activity
+                        Intent intent = new Intent(context, ComposeActivity.class);
+                        // serialize the movie using parceler, use its short name as a key
+                        //intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
+                        intent.putExtra("screenName", tweet.user.screenName);
+                        intent.putExtra("tweetId", tweet.uid);
+                        // show the activity
+                        context.startActivity(intent);
+                    }
+                }
+            });
+
+    }
     }
 
     public void clear() {

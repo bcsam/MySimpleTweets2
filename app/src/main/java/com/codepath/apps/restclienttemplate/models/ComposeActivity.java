@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.codepath.apps.restclienttemplate.R;
+import com.codepath.apps.restclienttemplate.TimelineActivity;
 import com.codepath.apps.restclienttemplate.TwitterClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -22,6 +23,10 @@ public class ComposeActivity extends AppCompatActivity {
     private EditText etBody;
     private TextView etCharCount;
     public static final int CHARS_IN_A_TWEET=140;
+    private boolean isReply;
+
+    private long in_reply_to_status_id;
+    private String in_reply_to_screen_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +35,15 @@ public class ComposeActivity extends AppCompatActivity {
 
         etBody = (EditText) findViewById(R.id.etBody);
         etBody.addTextChangedListener(mTextEditorWatcher);
-        
+
+        Bundle bundle = getIntent().getExtras();
+        in_reply_to_screen_name = bundle.getString("screenName");
+        isReply = false;
+        if(in_reply_to_screen_name != null) {
+            isReply = true;
+            in_reply_to_status_id = bundle.getLong("tweetId");
+            etBody.setText("@" + in_reply_to_screen_name);
+        }
     }
 
 
@@ -51,6 +64,11 @@ public class ComposeActivity extends AppCompatActivity {
         }
     };
 
+    public void cancel(View v){
+        Intent intent = new Intent(this, TimelineActivity.class);
+        this.startActivity(intent);
+    }
+
     public void onSubmit(View v){
         EditText etName = (EditText) findViewById(R.id.etBody);
         // Prepare data intent
@@ -59,32 +77,52 @@ public class ComposeActivity extends AppCompatActivity {
 
         TwitterClient client = new TwitterClient(this);
 
-        client.sendTweet(message, (new JsonHttpResponseHandler(){
-           private final int RESULT_OK = 20;
+        if(!isReply) {
+            client.sendTweet(message, (new JsonHttpResponseHandler() {
+                private final int RESULT_OK = 20;
 
-            @Override
-            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONObject response) {
-                Intent data = new Intent();
-                Tweet tweet = null;
-                try {
-                    tweet = Tweet.fromJSON(response);
-                    data.putExtra("tweet", Parcels.wrap(tweet));
-                    // Activity finished ok, return the data
-                    setResult(RESULT_OK, data); // set result code and bundle data for response
-                    finish();
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                @Override
+                public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONObject response) {
+                    Intent data = new Intent();
+                    Tweet tweet = null;
+                    try {
+                        tweet = Tweet.fromJSON(response);
+                        data.putExtra("tweet", Parcels.wrap(tweet));
+                        // Activity finished ok, return the data
+                        setResult(RESULT_OK, data); // set result code and bundle data for response
+                        finish();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
                 }
 
+            }), -1, "");
+        }else{
+            client.sendTweet(message, (new JsonHttpResponseHandler() {
+                private final int RESULT_OK = 20;
 
-            }
+                @Override
+                public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONObject response) {
+                    Intent data = new Intent();
+                    Tweet tweet = null;
+                    try {
+                        tweet = Tweet.fromJSON(response);
+                        data.putExtra("tweet", Parcels.wrap(tweet));
+                        // Activity finished ok, return the data
+                        setResult(RESULT_OK, data); // set result code and bundle data for response
+                        finish();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
 
-
-
-        }));
+            }), in_reply_to_status_id, in_reply_to_screen_name);
+        }
     }
 
-/*
+    /*
     @Override
     public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
 
