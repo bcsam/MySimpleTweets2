@@ -24,7 +24,8 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        String screenName = getIntent().getStringExtra("scree_name");
+
+        String screenName = getIntent().getStringExtra("screen_name");
         //create the user fragment
         UserTimelineFragment userTimelineFragment = UserTimelineFragment.newInstance(screenName);
         //display the user timeline fragment inside the container (dynamically)
@@ -36,6 +37,15 @@ public class ProfileActivity extends AppCompatActivity {
         //commit
         ft.commit();
 
+        if(screenName == null) { // TODO: 7/5/17
+            populateUserInfo();
+        }else{
+            populateProfileInfo(screenName);
+        }
+
+    }
+
+    private void populateUserInfo(){
         client = TwitterApp.getRestClient();
         client.getUserInfo(new JsonHttpResponseHandler(){
             @Override
@@ -47,7 +57,7 @@ public class ProfileActivity extends AppCompatActivity {
                     //set the title of the ActionBar based on the user information
                     getSupportActionBar().setTitle(user.screenName);
                     //populate the userr headline
-                    populateUserHealine(user);
+                    populateUserHeadline(user);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -57,7 +67,29 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void populateUserHealine(User user) {
+    private void populateProfileInfo(String screenName){
+        client = TwitterApp.getRestClient();
+        client.getProfileInfo(screenName, new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+
+                //deserialize the User object
+                try {
+                    User user = User.fromJSON(response);
+                    //set the title of the ActionBar based on the user information
+                    getSupportActionBar().setTitle(user.screenName);
+                    //populate the userr headline
+                    populateUserHeadline(user);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+    }
+
+    private void populateUserHeadline(User user) {
         TextView tvName = (TextView) findViewById(R.id.tvName);
         TextView tvTagline = (TextView) findViewById(R.id.tvTagline);
         TextView tvFollowers = (TextView) findViewById(R.id.tvFollowers);

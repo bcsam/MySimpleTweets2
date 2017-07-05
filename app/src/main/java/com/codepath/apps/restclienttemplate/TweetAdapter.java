@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +12,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.codepath.apps.restclienttemplate.models.ComposeActivity;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
-
-import static android.view.View.OnClickListener;
 
 /**
  * Created by bcsam on 6/26/17.
@@ -31,10 +27,22 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 
     private List<Tweet> mTweets;
     Context context;
+    private TweetAdapterListener mListener;
 
+
+
+    //define an interface required by the ViewHolder
+    public interface TweetAdapterListener{
+        public void onItemSelected(View view, int position);
+    }
+
+    public interface TweetSelectedListener{
+        public void onTweetSelected(Tweet tweet);
+    }
     //pass in Tweets array into constructor
-    public TweetAdapter(List<Tweet> tweets) {
+    public TweetAdapter(List<Tweet> tweets, TweetAdapterListener listener) {
         mTweets = tweets;
+        mListener = listener;
     }
 
     //for each row, inflate the layout and cache references into ViewHolder
@@ -105,7 +113,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             btReply = (Button) itemView.findViewById(R.id.btReply);
             //itemView.setOnClickListener(this);
 
-
+/*
             btReply.setOnClickListener(new OnClickListener() {
 
                 public void onClick(View v) {
@@ -123,6 +131,20 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                         intent.putExtra("screenName", tweet.user.screenName);
                         intent.putExtra("tweetId", tweet.uid);
                         // show the activity
+                        context.startActivity(intent);
+                    }
+                }
+            });
+            */
+
+            ivProfileImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        Tweet tweet = mTweets.get(position);
+                        Intent intent = new Intent(context, ProfileActivity.class);
+                        intent.putExtra("screen_name", tweet.user.screenName);
                         context.startActivity(intent);
                     }
                 }
