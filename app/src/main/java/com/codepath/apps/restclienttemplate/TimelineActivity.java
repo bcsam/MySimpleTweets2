@@ -8,15 +8,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.codepath.apps.restclienttemplate.fragments.HomeTimelineFragment;
 import com.codepath.apps.restclienttemplate.fragments.TweetsPagerAdapter;
+import com.codepath.apps.restclienttemplate.models.ComposeActivity;
+import com.codepath.apps.restclienttemplate.models.Tweet;
+
+import org.parceler.Parcels;
 
 public class TimelineActivity extends AppCompatActivity {
 
-    /*
-    private SwipeRefreshLayout swipeContainer;
+
+    //private SwipeRefreshLayout swipeContainer;
     private final int REQUEST_CODE = 20;
     private final int RESULT_OK = 20;
-    */
+    TweetsPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +31,8 @@ public class TimelineActivity extends AppCompatActivity {
         //get the view pager
         ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
         //set the adapter for the paper
-        vpPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager(), this));
+        adapter = new TweetsPagerAdapter(getSupportFragmentManager(), this);
+        vpPager.setAdapter(adapter);
         //setup the TabLayout to use the view pager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(vpPager);
@@ -58,17 +64,6 @@ public class TimelineActivity extends AppCompatActivity {
         */
     }
 
-    /*
-    public void reply(){
-        Log.d("Working", "Inside reply");
-        launchComposeView();
-        String replyInitMessage = "Replying to @";
-
-        ComposeActivity.setEtBodyText("Replying to");
-
-    }
-*/
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -99,19 +94,18 @@ public class TimelineActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-*/
-/*
+    }*/
+
+
     // ActivityOne.java
-    public void launchComposeView() {
+    public void launchComposeView(MenuItem menuItem) {
         // first parameter is the context, second is the class of the activity to launch
         Intent i = new Intent(TimelineActivity.this, ComposeActivity.class);
         i.putExtra("mode", 2); // pass arbitrary data to launched activity
         startActivityForResult(i, REQUEST_CODE);
     }
 
-*/
-/*
+    /*
     public void fetchTimelineAsync(int page) {
         // Send the network request to fetch the updated data
         // `client` here is an instance of Android Async HTTP
@@ -147,15 +141,15 @@ public class TimelineActivity extends AppCompatActivity {
             }
         });
     }
-
+*
+*
+*/
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode==REQUEST_CODE && resultCode==RESULT_OK) {
             Tweet tweet = (Tweet) Parcels.unwrap(data.getParcelableExtra("tweet"));
-            tweets.add(0, tweet);
-            tweetAdapter.notifyItemInserted(0);
-            rvTweets.scrollToPosition(0);
+            HomeTimelineFragment fragment =  (HomeTimelineFragment) adapter.getItem(0);
+            fragment.addTweet(tweet);
         }
     }
-    */
 }

@@ -4,14 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.codepath.apps.restclienttemplate.models.ComposeActivity;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
 import java.text.ParseException;
@@ -101,7 +102,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         public TextView tvUsername;
         public TextView tvBody;
         public TextView tvTimeStamp;
-        public Button btReply;
+        public ImageView btReply;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -110,12 +111,11 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             tvUsername = (TextView) itemView.findViewById(R.id.tvUserName);
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
             tvTimeStamp = (TextView) itemView.findViewById(R.id.tvTimeStamp);
-            btReply = (Button) itemView.findViewById(R.id.btReply);
+            btReply = (ImageView) itemView.findViewById(R.id.btReply);
             //itemView.setOnClickListener(this);
 
-/*
-            btReply.setOnClickListener(new OnClickListener() {
 
+            btReply.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     Log.d("Brent", "Sent intent");
                     //gets item position
@@ -135,7 +135,6 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                     }
                 }
             });
-            */
 
             ivProfileImage.setOnClickListener(new View.OnClickListener() {
                 @Override

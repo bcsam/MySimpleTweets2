@@ -40,12 +40,12 @@
         android:layout_alignParentTop="true"
         android:text="TextView" />
 
-    <Button
+    <ImageView
         android:id="@+id/btReply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/ivProfileImage"
-        android:onClick="reply"
-        android:text="Reply" />
+        app:srcCompat="@drawable/ic_action_name" />
+
 </RelativeLayout>

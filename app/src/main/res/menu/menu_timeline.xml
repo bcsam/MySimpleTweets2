@@ -2,10 +2,23 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+
+    <item
+        android:id="@+id/app_bar_search"
+        android:actionViewClass="android.widget.SearchView"
+        android:icon="@drawable/ic_search_black_24dp"
+        android:title="Search"
+        app:showAsAction="always" />
     <item
         android:id="@+id/miProfile"
         android:icon="@drawable/ic_person_white_24dp"
         android:onClick="onProfileView"
         android:title="Item"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/miCompose"
+        android:icon="@drawable/ic_chat_white_24dp"
+        android:onClick="launchComposeView"
+        android:title="Item"
+        app:showAsAction="always" />
 </menu>
