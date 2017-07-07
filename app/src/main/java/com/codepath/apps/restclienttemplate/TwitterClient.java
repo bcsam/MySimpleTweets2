@@ -107,6 +107,39 @@ public class TwitterClient extends OAuthBaseClient {
 		}
 		client.post(apiUrl, params, handler);
 	}
+
+	public void sendTweet(String message, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("statuses/update.json");
+		// Can specify query string params directly or through RequestParams.
+		RequestParams params = new RequestParams();
+			params.put("status", message);
+		client.post(apiUrl, params, handler);
+	}
+
+	public void sendReply(String message, AsyncHttpResponseHandler handler, long in_reply_to_status_id, String in_reply_to_screen_name){
+		String apiUrl = getApiUrl("statuses/update.json");
+		// Can specify query string params directly or through RequestParams.
+		RequestParams params = new RequestParams();
+		params.put("in_reply_to_status_id", in_reply_to_status_id);
+		params.put("in_reply_to_screen_name", in_reply_to_screen_name);
+		params.put("status", message);
+		client.post(apiUrl, params, handler);
+	}
+
+	public void sendRetweet(long tweet_id, AsyncHttpResponseHandler handler){
+		String apiUrl = getApiUrl("statuses/retweet.json");
+		// Can specify query string params directly or through RequestParams.
+		RequestParams params = new RequestParams();
+		params.put("id", tweet_id);
+		client.post(apiUrl, params, handler);
+	}
+
+	public void favoriteTweet(long tweet_id, AsyncHttpResponseHandler handler){
+		String apiUrl = getApiUrl("favorites/create.json");
+		RequestParams params = new RequestParams();
+		params.put("id", tweet_id);
+		client.post(apiUrl, params, handler);
+	}
 //putExtra of screenName and replyId
 	//unpack in the composeActivity
 	//add an argument so that it takes in a reply id

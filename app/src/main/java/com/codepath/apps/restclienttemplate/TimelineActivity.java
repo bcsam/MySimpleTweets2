@@ -37,6 +37,8 @@ public class TimelineActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(vpPager);
 
+
+
         /*
 
         // Only ever call `setContentView` once right at the top
